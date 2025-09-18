@@ -1,0 +1,30 @@
+#!/command/with-contenv bashio
+# shellcheck shell=bash
+# ==============================================================================
+# Home Assistant Community Add-on:
+# Starts
+# ==============================================================================
+
+set -e
+# bashio::require.unprotected
+
+bashio::log.info "Starting..."
+
+CONFIG_PATH=/data/options.json
+
+if bashio::config.is_empty 'firmware'; then
+  export ZIGSTARGW_WEB_DIR="/data"
+else
+  export ZIGSTARGW_WEB_DIR=$(bashio::config 'firmware')
+fi
+
+## ZIGSTARGW_ROOT_DIR 应用程序目录
+# if bashio::config.is_empty 'app'; then
+#   export ZIGSTARGW_ROOT_DIR="/app"
+# else
+#   export ZIGSTARGW_ROOT_DIR=$(bashio::config 'app')
+# fi
+
+exec python3 /app/backend.py
+
+
